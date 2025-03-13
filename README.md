@@ -27,6 +27,9 @@ This is the prototype implementation for an AI-powered Career Counseling Platfor
 career-counseling-platform/
 ├── frontend/                  # React frontend
 │   ├── public/
+│   │   ├── index.html
+│   │   ├── manifest.json
+│   │   └── robots.txt
 │   ├── src/
 │   │   ├── components/
 │   │   │   ├── ProfileForm.js
@@ -40,10 +43,10 @@ career-counseling-platform/
 │   └── README.md
 ├── backend/                   # Flask backend
 │   ├── app.py                 # Main Flask application
-│   ├── models.py              # Database models
+│   ├── career_paths.py        # Predefined career paths data
 │   ├── recommendation.py      # Recommendation engine
-│   ├── config.py              # Configuration settings
-│   └── requirements.txt       # Python dependencies
+│   ├── requirements.txt       # Python dependencies
+│   └── config.py              # Configuration settings (optional)
 └── README.md
 ```
 
@@ -66,7 +69,37 @@ career-counseling-platform/
 ### Prerequisites
 - Node.js and npm
 - Python 3.7+
-- MongoDB
+- MongoDB Community Edition
+
+### MongoDB Setup
+1. Download and install MongoDB Community Edition from the [official MongoDB website](https://www.mongodb.com/try/download/community)
+
+2. For Windows:
+   - During installation, make sure to select "Install MongoDB as a Service"
+   - Keep the default data directory path (C:\Program Files\MongoDB\Server\X.X\data) or set a custom path
+   - After installation, MongoDB service should start automatically
+
+3. For macOS (using Homebrew):
+   ```
+   brew tap mongodb/brew
+   brew install mongodb-community
+   brew services start mongodb-community
+   ```
+
+4. For Linux (Ubuntu/Debian):
+   ```
+   sudo apt update
+   sudo apt install -y mongodb
+   sudo systemctl start mongodb
+   sudo systemctl enable mongodb
+   ```
+
+5. Verify MongoDB is running:
+   - Open a command prompt/terminal and enter:
+   ```
+   mongo
+   ```
+   - If MongoDB is running, you should see the MongoDB shell
 
 ### Backend Setup
 1. Navigate to the backend directory:
@@ -85,12 +118,11 @@ career-counseling-platform/
    pip install -r requirements.txt
    ```
 
-4. Make sure MongoDB is running on your local machine on the default port (27017).
-
-5. Start the Flask server:
+4. Start the Flask server:
    ```
    python app.py
    ```
+   - The server will run on http://localhost:5000
 
 ### Frontend Setup
 1. Navigate to the frontend directory:
@@ -107,14 +139,48 @@ career-counseling-platform/
    ```
    npm start
    ```
+   - The application will open in your browser at http://localhost:3000
 
-4. Open your browser and go to `http://localhost:3000`.
+## Troubleshooting MongoDB
+
+### MongoDB Connection Issues
+If you encounter MongoDB connection errors:
+
+1. Check if MongoDB service is running:
+   - Windows: Open Services (services.msc) and check MongoDB service status
+   - Linux/macOS: `sudo systemctl status mongodb` or `brew services list`
+
+2. Manual MongoDB startup:
+   ```
+   mongod --dbpath C:\data\db  # Windows (create this directory if it doesn't exist)
+   mongod --dbpath /data/db    # Linux/macOS (create with sudo mkdir -p /data/db)
+   ```
+
+3. Connection string issues:
+   - Check the connection string in app.py: `mongodb://localhost:27017/career_counseling`
+   - If MongoDB runs on a different port, update accordingly
+
+4. If you still can't connect to MongoDB, consider using SQLite as a fallback (see alternative implementation in the code).
 
 ## Usage
 
-1. Create a user profile by filling out the form.
-2. View your career recommendations on the dashboard.
-3. Explore detailed recommendations in the Recommendations section.
+1. Create a user profile by filling out the form with:
+   - Name
+   - Email
+   - Educational background
+   - Skills (comma-separated)
+   - Interests (comma-separated)
+   - Career goals
+
+2. View your career recommendations on the dashboard:
+   - Top recommendation with match score
+   - Potential job roles
+   - Skills to develop
+
+3. Explore detailed recommendations in the Recommendations section:
+   - All matching career paths
+   - Color-coded skill matching
+   - Skill gaps to address
 
 ## Future Enhancements
 
